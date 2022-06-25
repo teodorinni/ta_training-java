@@ -4,13 +4,14 @@ import cars.specifications.EngineTypes;
 import cars.specifications.ServiceCarPurposes;
 import taxi_station.TaxiStation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    static List<Car> cars = Arrays.asList(
+    static List<Car> cars = new ArrayList<>(Arrays.asList(
         new TaxiCar("Accent", "Hyundai", 13000, 194, 6.2, CarBodyTypes.SEDAN, EngineTypes.PETROL, Arrays.asList("John Doe", "Jack Doe"), 3),
         new TaxiCar("Golf", "Volkswagen", 16000, 196, 6.0, CarBodyTypes.HATCHBACK, EngineTypes.PETROL, List.of("Jack Harris"), 3),
         new TaxiCar("Scenic", "Renault", 15000, 186, 4.7, CarBodyTypes.MINIVAN, EngineTypes.DIESEL, Arrays.asList("Jack Harris", "John Doe"), 5),
@@ -23,7 +24,7 @@ public class Main {
         new TaxiStationServiceCar("Polo", "Volkswagen", 14000, 194, 4.5, CarBodyTypes.HATCHBACK, EngineTypes.PETROL, "Adam Sandler", ServiceCarPurposes.MAINTENANCE_CAR),
         new TaxiStationServiceCar("Superb", "Skoda", 22000, 217, 5.7, CarBodyTypes.SEDAN, EngineTypes.DIESEL, "Jack Bauer", ServiceCarPurposes.MANAGEMENT_CAR),
         new TaxiStationServiceCar("Civic", "Honda", 17000, 204, 4.2, CarBodyTypes.HATCHBACK, EngineTypes.HYBRID, "Jack Harris", ServiceCarPurposes.REPLACEMENT_CAR)
-    );
+    ));
 
     public static void main(String[] args) {
         TaxiStation taxiStation = new TaxiStation(cars);
