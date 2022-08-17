@@ -9,7 +9,7 @@ public class Main {
         for (Subject subject : student.getSubjects()) {
             selectedGrades.addAll(subject.getGrades());
         }
-        double averageGrade = selectedGrades.stream().mapToDouble(a -> a).average().orElse(0.0);
+        double averageGrade = selectedGrades.stream().mapToDouble(grade -> grade).average().orElse(0.0);
         System.out.println("Average grade of student " + student.getName() + " " + student.getSurname() + " is: " + String.format("%.2f", averageGrade));
         return averageGrade;
     }
@@ -27,7 +27,7 @@ public class Main {
                 }
             }
         }
-        double averageGrade = selectedGrades.stream().mapToDouble(a -> a).average().orElse(0.0);
+        double averageGrade = selectedGrades.stream().mapToDouble(grade -> grade).average().orElse(0.0);
         System.out.println("Average grade in " + faculty.getName() + " faculty, " + groupId + " group and " + subjectName.name() + " subject is: " + String.format("%.2f", averageGrade));
         return averageGrade;
     }
@@ -45,7 +45,7 @@ public class Main {
                 }
             }
         }
-        double averageGrade = selectedGrades.stream().mapToDouble(a -> a).average().orElse(0.0);
+        double averageGrade = selectedGrades.stream().mapToDouble(grade -> grade).average().orElse(0.0);
         System.out.println("The university average grade by " + subjectName.name() + " is: " + String.format("%.2f", averageGrade));
         return averageGrade;
     }

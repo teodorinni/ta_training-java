@@ -5,18 +5,18 @@ import java.util.Set;
 
 public class Group {
 
-    private static int current_id = 1;
+    private static int counter = 1;
     private int id;
     private Set<Student> students;
 
     public Group() {
-        this.id = current_id;
-        current_id++;
+        this.id = counter;
+        counter++;
     }
 
     public Group(Set<Student> students) {
-        this.id = current_id;
-        current_id++;
+        this.id = counter;
+        counter++;
         this.students = students;
     }
 

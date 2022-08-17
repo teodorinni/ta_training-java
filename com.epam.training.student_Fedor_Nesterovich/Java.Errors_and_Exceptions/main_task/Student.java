@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
 
 public class Student {
 
-    private static int current_id = 1;
+    private static int MIN_BIRTH_YEAR = 1900;
+    private static int counter = 1;
     private int id;
     private String surname;
     private String name;
@@ -18,21 +19,21 @@ public class Student {
     private Set<Subject> subjects;
 
     public Student() {
-        id = current_id;
-        current_id++;
+        id = counter;
+        counter++;
     }
 
     public Student(String surname, String name, String birthDate) {
-        id = current_id;
-        current_id++;
+        id = counter;
+        counter++;
         this.setSurname(surname);
         this.setName(name);
         this.setBirthDate(birthDate);
     }
 
     public Student(String surname, String name, String birthDate, Set<Subject> subjects) {
-        id = current_id;
-        current_id++;
+        id = counter;
+        counter++;
         this.setSurname(surname);
         this.setName(name);
         this.setBirthDate(birthDate);
@@ -81,14 +82,14 @@ public class Student {
         int year = Integer.parseInt(date[0]);
         int month = Integer.parseInt(date[1]) - 1;
         int day = Integer.parseInt(date[2]);
-        Calendar c = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
-        c.set(year, month, day);
-        if (c.after(today) || year < 1900) {
+        calendar.set(year, month, day);
+        if (calendar.after(today) || year < MIN_BIRTH_YEAR) {
             throw new StudentBirthDateException("The student's birth date is incorrect or is entered using incorrect format.");
         }
         else {
-            this.birthDate = c;
+            this.birthDate = calendar;
         }
     }
 
