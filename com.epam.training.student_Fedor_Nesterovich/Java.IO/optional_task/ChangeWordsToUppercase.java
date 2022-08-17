@@ -1,42 +1,33 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //  4. Прочитать текст Java-программы и в каждом слове длиннее двух символов все строчные символы заменить прописными.
 public class ChangeWordsToUppercase {
+
+    private static final String FOLDER_NAME = "change_words_to_uppercase";
+
     public static void main(String[] args) throws IOException {
         System.out.print("Enter a path to a .java file: ");
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
         String path = inputReader.readLine();
         File file = new File(path);
         if (file.exists() && file.isFile() && path.endsWith(".java")) {
-            List<String> textFromFileList = new ArrayList<>();
-            List<String> changedLines = new ArrayList<>();
+            String textFromFile = Files.readString(Path.of(path));
             Pattern pattern = Pattern.compile("\\w{2,}");
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    textFromFileList.add(line);
-                }
-            }
-            for (String line : textFromFileList) {
-                Matcher matcher = pattern.matcher(line);
-                String lineWithUppercase = matcher.replaceAll(m -> m.group().toUpperCase());
-                changedLines.add(lineWithUppercase);
-            }
-            new File("change_words_to_uppercase").mkdirs();
-            try (FileWriter writer = new FileWriter("change_words_to_uppercase/changed_"+ file.getName(), true)) {
+            Matcher matcher = pattern.matcher(textFromFile);
+            String changedText = matcher.replaceAll(words -> words.group().toUpperCase());
+            new File(FOLDER_NAME).mkdirs();
+            try (FileWriter writer = new FileWriter(FOLDER_NAME +"/changed_"+ file.getName(), true)) {
                 // Clear any text from file
-                File updatedFile = new File("change_words_to_uppercase/changed_"+ file.getName());
+                File updatedFile = new File(FOLDER_NAME +"/changed_"+ file.getName());
                 PrintWriter printWriter = new PrintWriter(updatedFile);
                 printWriter.print("");
                 printWriter.close();
 
-                for (String line : changedLines) {
-                    writer.write(line + "\n");
-                }
+                writer.write(changedText);
             }
         } else {
             System.out.println("The path to .java file is incorrect.");
