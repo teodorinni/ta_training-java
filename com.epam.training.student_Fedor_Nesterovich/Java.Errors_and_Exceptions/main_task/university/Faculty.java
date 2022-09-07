@@ -1,3 +1,5 @@
+package university;
+
 import exceptions.NoGroupsInFacultyException;
 
 import java.util.Objects;
@@ -5,23 +7,23 @@ import java.util.Set;
 
 public class Faculty {
 
-    private FacultyNames name;
+    private FacultyName name;
     private Set<Group> groups;
 
-    public Faculty(FacultyNames name) {
+    public Faculty(FacultyName name) {
         this.name = name;
     }
 
-    public Faculty(FacultyNames name, Set<Group> groups) {
+    public Faculty(FacultyName name, Set<Group> groups) {
         this.name = name;
         this.groups = groups;
     }
 
-    public FacultyNames getName() {
+    public FacultyName getName() {
         return name;
     }
 
-    public void setName(FacultyNames name) {
+    public void setName(FacultyName name) {
         this.name = name;
     }
 

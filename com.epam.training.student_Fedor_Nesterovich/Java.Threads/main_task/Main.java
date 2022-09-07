@@ -1,3 +1,6 @@
+import parking.Car;
+import parking.Parking;
+
 import java.util.Scanner;
 
 public class Main {

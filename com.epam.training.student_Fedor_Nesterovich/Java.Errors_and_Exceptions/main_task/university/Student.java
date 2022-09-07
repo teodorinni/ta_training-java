@@ -1,3 +1,5 @@
+package university;
+
 import exceptions.NoSubjectsAddedToStudentException;
 import exceptions.StudentBirthDateException;
 import exceptions.StudentNameException;
@@ -10,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class Student {
 
-    private static int MIN_BIRTH_YEAR = 1900;
+    private static final int MIN_BIRTH_YEAR = 1900;
     private static int counter = 1;
     private int id;
     private String surname;

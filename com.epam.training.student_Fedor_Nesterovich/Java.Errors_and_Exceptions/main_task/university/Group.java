@@ -1,3 +1,5 @@
+package university;
+
 import exceptions.NoStudentsInGroupException;
 
 import java.util.Objects;
@@ -6,7 +8,7 @@ import java.util.Set;
 public class Group {
 
     private static int counter = 1;
-    private int id;
+    private final int id;
     private Set<Student> students;
 
     public Group() {

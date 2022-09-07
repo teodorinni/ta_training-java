@@ -1,3 +1,6 @@
+import airport.Airport;
+import airport.Plane;
+
 public class Main {
 
     private static final int PLANES_COUNT = 10;

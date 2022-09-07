@@ -1,7 +1,10 @@
+package parking;
+
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Car extends Thread {
@@ -10,11 +13,11 @@ public class Car extends Thread {
     private static final int PARKING_TIME_FROM = 5;
     private static final int PARKING_TIME_TO = 10;
     private static final int MAX_WAITING_TIME = 7;
-    private int carId;
+    private final int carId;
     private CarState carState;
-    private Parking parking;
-    private static ReentrantLock lock = new ReentrantLock(true);
-    private static Condition condition = lock.newCondition();
+    private final Parking parking;
+    private static final Lock lock = new ReentrantLock(true);
+    private static final Condition condition = lock.newCondition();
 
     public Car(Parking parking) {
         this.carId = carCounter;
@@ -32,13 +35,15 @@ public class Car extends Thread {
 
     synchronized void park(Parking parking) {
         lock.lock();
-        for (int i = 0; i < parking.parkingPlaces.length; i++) {
-            if (parking.parkingPlaces[i] == null) {
-                parking.parkingPlaces[i] = this;
+        Car[] parkingPlaces = parking.getParkingPlaces();
+        for (int i = 0; i < parkingPlaces.length; i++) {
+            if (parkingPlaces[i] == null) {
+                parkingPlaces[i] = this;
                 setCarState(CarState.PARKED);
-                parking.freePlaces--;
+                parking.setFreePlaces(parking.getFreePlaces() - 1);
+                parking.setParkingPlaces(parkingPlaces);
                 System.out.println("Car № " + getCarId() +": " + getCarState());
-                System.out.println("Parking places left: " + parking.freePlaces);
+                System.out.println("Parking places left: " + parking.getFreePlaces());
                 lock.unlock();
                 try {
                     TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(PARKING_TIME_FROM, PARKING_TIME_TO));
@@ -52,13 +57,14 @@ public class Car extends Thread {
             try {
                 boolean timeLimitNotExpired = condition.await(MAX_WAITING_TIME, TimeUnit.SECONDS);
                 if (timeLimitNotExpired) {
-                    for (int i = 0; i < parking.parkingPlaces.length; i++) {
-                        if (parking.parkingPlaces[i] == null) {
-                            parking.parkingPlaces[i] = this;
+                    for (int i = 0; i < parkingPlaces.length; i++) {
+                        if (parkingPlaces[i] == null) {
+                            parkingPlaces[i] = this;
                             setCarState(CarState.PARKED);
-                            parking.freePlaces--;
+                            parking.setFreePlaces(parking.getFreePlaces() - 1);
+                            parking.setParkingPlaces(parkingPlaces);
                             System.out.println("Car № " + getCarId() + ": " + getCarState());
-                            System.out.println("Parking places left: " + parking.freePlaces);
+                            System.out.println("Parking places left: " + parking.getFreePlaces());
                             lock.unlock();
                             TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(PARKING_TIME_FROM, PARKING_TIME_TO));
                             break;
@@ -67,7 +73,7 @@ public class Car extends Thread {
                 } else {
                     setCarState(CarState.LEFT);
                     System.out.println("Car № " + getCarId() +": " + getCarState() + " (The Car waiting time has expired)");
-                    System.out.println("Parking places left: " + parking.freePlaces);
+                    System.out.println("Parking places left: " + parking.getFreePlaces());
                     lock.unlock();
                 }
             } catch (InterruptedException e) {
@@ -78,13 +84,15 @@ public class Car extends Thread {
 
     synchronized void leave(Parking parking) {
         lock.lock();
-        for (int i = 0; i < parking.parkingPlaces.length; i++) {
-            if (parking.parkingPlaces[i] == this) {
+        Car[] parkingPlaces = parking.getParkingPlaces();
+        for (int i = 0; i < parkingPlaces.length; i++) {
+            if (parkingPlaces[i] == this) {
                 setCarState(CarState.LEFT);
-                parking.freePlaces++;
+                parking.setFreePlaces(parking.getFreePlaces() + 1);
                 System.out.println("Car № " + getCarId() +": " + getCarState());
-                System.out.println("Parking places left: " + parking.freePlaces);
-                parking.parkingPlaces[i] = null;
+                System.out.println("Parking places left: " + parking.getFreePlaces());
+                parkingPlaces[i] = null;
+                parking.setParkingPlaces(parkingPlaces);
                 condition.signal();
                 break;
             }

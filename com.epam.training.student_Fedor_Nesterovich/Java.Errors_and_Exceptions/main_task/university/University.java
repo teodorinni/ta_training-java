@@ -1,3 +1,5 @@
+package university;
+
 import exceptions.NoFacultiesInUniversityException;
 
 import java.util.Objects;

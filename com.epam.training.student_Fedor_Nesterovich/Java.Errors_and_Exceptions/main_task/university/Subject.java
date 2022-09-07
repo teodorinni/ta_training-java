@@ -1,3 +1,5 @@
+package university;
+
 import exceptions.IncorrectGradeValueException;
 
 import java.util.List;
@@ -5,19 +7,19 @@ import java.util.Objects;
 
 public class Subject {
 
-    private SubjectNames subjectName;
+    private SubjectName subjectName;
     private List<Integer> grades;
 
-    public Subject(SubjectNames subjectName, List<Integer> grades) {
+    public Subject(SubjectName subjectName, List<Integer> grades) {
         setSubjectName(subjectName);
         setGrades(grades);
     }
 
-    public SubjectNames getSubjectName() {
+    public SubjectName getSubjectName() {
         return subjectName;
     }
 
-    public void setSubjectName(SubjectNames subjectName) {
+    public void setSubjectName(SubjectName subjectName) {
         this.subjectName = subjectName;
     }
 
@@ -39,7 +41,7 @@ public class Subject {
             throw new IncorrectGradeValueException("Grade should be in 0 - 10 range");
         } else {
             grades.add(grade);
-        };
+        }
     }
 
     @Override

@@ -1,4 +1,5 @@
-import java.util.Arrays;
+package airport;
+
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -8,11 +9,11 @@ public class Plane extends Thread {
 
     private static int planeCounter = 1;
     private static final int TIME_FOR_TAKEOFF = 3;
-    private int planeID;
+    private final int planeID;
     private PlaneState planeState;
-    private Airport airport;
-    private static ReentrantLock lock = new ReentrantLock(true);
-    private static Condition condition = lock.newCondition();
+    private final Airport airport;
+    private static final ReentrantLock lock = new ReentrantLock(true);
+    private static final Condition condition = lock.newCondition();
 
     public Plane(Airport airport) {
         this.planeID = planeCounter;
@@ -29,13 +30,15 @@ public class Plane extends Thread {
 
     synchronized void enterRunway(Airport airport) {
         lock.lock();
-        for (int i = 0; i < airport.runways.length; i++) {
-            if (airport.runways[i] == null) {
-                airport.runways[i] = this;
+        Plane[] runways = airport.getRunways();
+        for (int i = 0; i < runways.length; i++) {
+            if (runways[i] == null) {
+                runways[i] = this;
                 setCarState(PlaneState.ON_RUNWAY);
-                airport.freeRunways--;
+                airport.setFreeRunways(airport.getFreeRunways() - 1);
+                airport.setRunways(runways);
                 System.out.println("Plane № " + getPlaneID() +": " + getCarState());
-                System.out.println("Free runways left: " + airport.freeRunways);
+                System.out.println("Free runways left: " + airport.getFreeRunways());
                 lock.unlock();
                 try {
                     TimeUnit.SECONDS.sleep(TIME_FOR_TAKEOFF);
@@ -48,13 +51,14 @@ public class Plane extends Thread {
         if (getCarState() == PlaneState.WAITING) {
             try {
                 condition.await();
-                    for (int i = 0; i < airport.runways.length; i++) {
-                        if (airport.runways[i] == null) {
-                            airport.runways[i] = this;
+                    for (int i = 0; i < runways.length; i++) {
+                        if (runways[i] == null) {
+                            runways[i] = this;
                             setCarState(PlaneState.ON_RUNWAY);
-                            airport.freeRunways--;
+                            airport.setFreeRunways(airport.getFreeRunways() - 1);
+                            airport.setRunways(runways);
                             System.out.println("Plane № " + getPlaneID() + ": " + getCarState());
-                            System.out.println("Free runways left: " + airport.freeRunways);
+                            System.out.println("Free runways left: " + airport.getFreeRunways());
                             lock.unlock();
                             TimeUnit.SECONDS.sleep(TIME_FOR_TAKEOFF);
                             break;
@@ -68,13 +72,15 @@ public class Plane extends Thread {
 
     synchronized void leaveRunway(Airport airport) {
         lock.lock();
-        for (int i = 0; i < airport.runways.length; i++) {
-            if (airport.runways[i] == this) {
+        Plane[] runways = airport.getRunways();
+        for (int i = 0; i < runways.length; i++) {
+            if (runways[i] == this) {
                 setCarState(PlaneState.LEFT_RUNWAY);
-                airport.freeRunways++;
+                airport.setFreeRunways(airport.getFreeRunways() + 1);
                 System.out.println("Plane № " + getPlaneID() +": " + getCarState());
-                System.out.println("Free runways left: " + airport.freeRunways);
-                airport.runways[i] = null;
+                System.out.println("Free runways left: " + airport.getFreeRunways());
+                runways[i] = null;
+                airport.setRunways(runways);
                 condition.signal();
                 break;
             }
