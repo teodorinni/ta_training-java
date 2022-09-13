@@ -100,15 +100,19 @@ public class YopMailPage {
             try {
                 WebElement iframe = new WebDriverWait(driver,
                         Duration.ofSeconds(10))
-                        .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[@name='ifmail']")));
+                        .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[@id='ifmail']")));
                 driver.switchTo().frame(iframe);
                 return estimatedCost.getText().replaceAll("Estimated Monthly Cost: ", "");
             } catch (NoSuchElementException exception) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 refreshMailbox();
-                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             }
         }
-        return null;
+        return "Email has not been received.";
     }
 
     public void closePage() {

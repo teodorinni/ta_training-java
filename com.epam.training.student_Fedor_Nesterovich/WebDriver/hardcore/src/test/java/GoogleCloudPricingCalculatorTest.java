@@ -51,7 +51,7 @@ public class GoogleCloudPricingCalculatorTest {
     }
 
     @Test
-    public void estimatedCostTest() {
+    public void estimatedCostTest() throws InterruptedException {
         Assert.assertEquals(resultPage.getEstimatedCost(), expectedEstimatedCost, "The estimated cost is incorrect!");
     }
 
