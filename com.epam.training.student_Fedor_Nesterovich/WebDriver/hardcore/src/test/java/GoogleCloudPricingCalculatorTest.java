@@ -26,7 +26,9 @@ public class GoogleCloudPricingCalculatorTest {
                 .fillNumberOfInstances()
                 .selectSeries()
                 .selectMachineType()
-                .addGpus()
+                .pressAddGpusTickMark()
+                .selectGpuType()
+                .selectGpuQuantity()
                 .selectLocalSsd()
                 .selectDatacenterLocation()
                 .selectCommittedUsage()
@@ -51,7 +53,7 @@ public class GoogleCloudPricingCalculatorTest {
     }
 
     @Test
-    public void estimatedCostTest() throws InterruptedException {
+    public void estimatedCostTest() {
         Assert.assertEquals(resultPage.getEstimatedCost(), expectedEstimatedCost, "The estimated cost is incorrect!");
     }
 

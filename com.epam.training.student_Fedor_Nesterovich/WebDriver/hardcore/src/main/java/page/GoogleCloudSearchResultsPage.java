@@ -13,8 +13,10 @@ import java.time.Duration;
 public class GoogleCloudSearchResultsPage {
 
     private final WebDriver driver;
+    private static final String PRICING_CALCULATOR_LINK_XPATH = "//b[text()='Google Cloud Platform Pricing Calculator']/parent::a";
 
-    @FindBy(xpath = "//b[text()='Google Cloud Platform Pricing Calculator']/parent::a")
+
+    @FindBy(xpath = PRICING_CALCULATOR_LINK_XPATH)
     private WebElement pricingCalculatorLink;
 
     public GoogleCloudSearchResultsPage(WebDriver driver) {
@@ -25,7 +27,7 @@ public class GoogleCloudSearchResultsPage {
     public GoogleCloudPricingCalculatorConfigurationPage openPricingCalculatorLink() {
         new WebDriverWait(driver,
                 Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("(//b[text()='Google Cloud Platform Pricing Calculator'])[1]/parent::a")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(PRICING_CALCULATOR_LINK_XPATH)));
         pricingCalculatorLink.click();
         return new GoogleCloudPricingCalculatorConfigurationPage(driver);
     }

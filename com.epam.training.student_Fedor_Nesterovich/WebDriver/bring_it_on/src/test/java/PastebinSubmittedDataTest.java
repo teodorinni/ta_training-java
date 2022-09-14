@@ -23,7 +23,8 @@ public class PastebinSubmittedDataTest {
                 .selectSyntaxHighlighting()
                 .selectPasteExpirationTime()
                 .fillPasteTitle()
-                .submitPaste();
+                .submitPaste()
+                .waitForElementsToLoad();
     }
 
     @Test

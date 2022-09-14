@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GoogleCloudPricingCalculatorResultPage {
 
@@ -81,13 +82,13 @@ public class GoogleCloudPricingCalculatorResultPage {
 
     public YopMailPage createNewTab() {
         ((JavascriptExecutor) driver).executeScript("window.open()");
-        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(1));
         return new YopMailPage(driver);
     }
 
     public YopMailPage goToSecondTab() {
-        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(1));
         return new YopMailPage(driver);
     }

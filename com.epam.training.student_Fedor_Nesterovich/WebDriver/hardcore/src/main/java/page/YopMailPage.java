@@ -54,7 +54,9 @@ public class YopMailPage {
                     Duration.ofSeconds(2))
                     .until(ExpectedConditions.presenceOfElementLocated(By.xpath(ACCEPT_NECESSARY_COOKIES_BUTTON_XPATH)));
             acceptNecessaryCookiesButton.click();
-        } catch (NoSuchElementException | TimeoutException ignored) {}
+        } catch (NoSuchElementException | TimeoutException exception) {
+            System.out.println("The Accept Privacy Terms message did not appear on the mailbox page.");
+        }
         return this;
     }
 

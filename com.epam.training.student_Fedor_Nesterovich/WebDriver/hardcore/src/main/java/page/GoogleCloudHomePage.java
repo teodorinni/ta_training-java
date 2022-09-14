@@ -16,8 +16,9 @@ public class GoogleCloudHomePage {
     private final WebDriver driver;
     private static final String PAGE_URL = "https://cloud.google.com";
     private static final String SEARCH_TEXT = "Google Cloud Platform Pricing Calculator";
+    private static final String SEARCH_INPUT_XPATH = "//input[@name='q']";
 
-    @FindBy(xpath = "//input[@name='q']")
+    @FindBy(xpath = SEARCH_INPUT_XPATH)
     private WebElement searchTextInput;
 
     public GoogleCloudHomePage(WebDriver driver) {
@@ -29,7 +30,7 @@ public class GoogleCloudHomePage {
         driver.get(PAGE_URL);
         new WebDriverWait(driver,
                 Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='q']")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(SEARCH_INPUT_XPATH)));
         return this;
     }
 

@@ -23,8 +23,8 @@ public class GoogleCloudPricingCalculatorConfigurationPage {
     private final static String ADD_GPUS_TICK_MARK_XPATH = "(//*[contains(text(),'Add GPUs.')])[1]/parent::*";
     private final static String GPU_TYPE_SELECTION_XPATH = "//*[@placeholder='GPU type']";
     private final static String GPU_TYPE_VALUE_XPATH = "//*[@value='NVIDIA_TESLA_V100']";
-    private final static String GPU_NUMBER_SELECTION_XPATH = "//*[text()='Number of GPUs']/parent::*";
-    private final static String GPU_NUMBER_VALUE_XPATH = "//*[contains(@ng-repeat,'supportedGpuNumbers')][@value='1']";
+    private final static String GPU_QUANTITY_SELECTION_XPATH = "//*[text()='Number of GPUs']/parent::*";
+    private final static String GPU_QUANTITY_VALUE_XPATH = "//*[contains(@ng-repeat,'supportedGpuNumbers')][@value='1']";
     private final static String LOCAL_SSD_SELECTION_XPATH = "(//*[text()='Local SSD'])[1]/parent::*";
     private final static String LOCAL_SSD_VALUE_XPATH = "//*[contains(text(),'2x375 GB')]/parent::*";
     private final static String DATACENTER_LOCATION_SELECTION_XPATH = "(//*[@placeholder='Datacenter location'])[1]";
@@ -60,11 +60,11 @@ public class GoogleCloudPricingCalculatorConfigurationPage {
     @FindBy(xpath = GPU_TYPE_VALUE_XPATH)
     private WebElement gpuTypeValue;
 
-    @FindBy(xpath = GPU_NUMBER_SELECTION_XPATH)
-    private WebElement gpuNumberSelection;
+    @FindBy(xpath = GPU_QUANTITY_SELECTION_XPATH)
+    private WebElement gpuQuantitySelection;
 
-    @FindBy(xpath = GPU_NUMBER_VALUE_XPATH)
-    private WebElement gpuNumberValue;
+    @FindBy(xpath = GPU_QUANTITY_VALUE_XPATH)
+    private WebElement gpuQuantityValue;
 
     @FindBy(xpath = LOCAL_SSD_SELECTION_XPATH)
     private WebElement localSsdSelection;
@@ -118,7 +118,7 @@ public class GoogleCloudPricingCalculatorConfigurationPage {
                                 MACHINE_TYPE_SELECTION_XPATH + "|" +
                                 ADD_GPUS_TICK_MARK_XPATH + "|" +
                                 GPU_TYPE_SELECTION_XPATH + "|" +
-                                GPU_NUMBER_SELECTION_XPATH + "|" +
+                                GPU_QUANTITY_SELECTION_XPATH + "|" +
                                 LOCAL_SSD_SELECTION_XPATH + "|" +
                                 DATACENTER_LOCATION_SELECTION_XPATH + "|" +
                                 COMMITTED_USAGE_SELECTION_XPATH )));
@@ -145,21 +145,29 @@ public class GoogleCloudPricingCalculatorConfigurationPage {
         return this;
     }
 
-    public GoogleCloudPricingCalculatorConfigurationPage addGpus() {
+    public GoogleCloudPricingCalculatorConfigurationPage pressAddGpusTickMark() {
         addGpusTickMark.click();
         new WebDriverWait(driver,
                 Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(GPU_TYPE_SELECTION_XPATH + "|" + GPU_NUMBER_SELECTION_XPATH)));
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(GPU_TYPE_SELECTION_XPATH + "|" + GPU_QUANTITY_SELECTION_XPATH)));
+        return this;
+    }
+
+    public GoogleCloudPricingCalculatorConfigurationPage selectGpuType() {
         gpuTypeSelection.click();
         new WebDriverWait(driver,
                 Duration.ofSeconds(10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath(GPU_TYPE_VALUE_XPATH)));
         gpuTypeValue.click();
-        gpuNumberSelection.click();
+        return this;
+    }
+
+    public GoogleCloudPricingCalculatorConfigurationPage selectGpuQuantity() {
+        gpuQuantitySelection.click();
         new WebDriverWait(driver,
                 Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(GPU_NUMBER_VALUE_XPATH)));
-        gpuNumberValue.click();
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(GPU_QUANTITY_VALUE_XPATH)));
+        gpuQuantityValue.click();
         return this;
     }
 
