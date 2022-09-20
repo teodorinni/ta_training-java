@@ -108,7 +108,6 @@ public class YopMailPage extends AbstractPage {
                         Duration.ofSeconds(10))
                         .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[@id='ifmail']")));
                 driver.switchTo().frame(iframe);
-                logger.info("The email has been received");
                 return estimatedCost.getText().replaceAll("Estimated Monthly Cost: ", "");
             } catch (NoSuchElementException exception) {
                 try {
