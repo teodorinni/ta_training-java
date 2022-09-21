@@ -2,10 +2,7 @@ package test;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import page.GoogleCloudHomePage;
-import page.GoogleCloudPricingCalculatorResultPage;
 import page.Steps;
-import page.YopMailPage;
 
 public class GoogleCloudPricingCalculatorTest extends CommonConditions {
 
